@@ -28,12 +28,16 @@ export default function InstitucionesPage() {
   );
 
   return (
-  <main className="bg-white min-h-screen ">
+    <main className="bg-white min-h-screen ">
       {/* Header */}
       <Header />
 
+      {/* Título */}
+      <h2 className="text-center text-4xl font-semibold text-[#FFD700] mt-10 mb-1.5 tracking-wide ">
+        Articulos de dotacion de la instituciones
+      </h2>
       {/* Filtros centrados */}
-    <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-8 mt-6 px-4 w-full">
+      <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-8 mt-6 px-4 w-full">
         <SearchInput
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
@@ -46,10 +50,7 @@ export default function InstitucionesPage() {
         />
       </div>
 
-      {/* Título */}
-      <h2 className="text-center text-2xl font-semibold text-[#FFD700] mb-6 tracking-wide">
-        Lista de Instituciones
-      </h2>
+
 
       {/* Cards */}
       <div className="flex flex-wrap gap-6 justify-center">
