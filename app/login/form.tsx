@@ -2,11 +2,13 @@
 
 import React, { useState } from 'react';
 import { login } from '@/services/authDotacion';
+import { useAuth } from '@/context/AuthContext'; 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const Form = () => {
   const router = useRouter();
+  const { setToken } = useAuth(); 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,9 +25,10 @@ const Form = () => {
         contraseniaUsuario: password,
       });
 
-      console.log('Login exitoso', response);
-      router.push('/home');
+      setToken(response.token);
 
+      console.log('Login exitoso', response);
+      router.push('/municipality'); 
     } catch (err: any) {
       console.error('Error en login:', err);
       setError(

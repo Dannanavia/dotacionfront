@@ -12,11 +12,15 @@ interface LoginPayload {
   contraseniaUsuario: string;
 }
 
-export const login = async (payload: LoginPayload) => {
+interface LoginResponse {
+  token: string;
+}
+
+export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   try {
     console.log('Intentando login con payload:', payload);
-    const response = await api.post('Auth/login', payload);
-    return response.data;
+    const response = await api.post('/Auth/login', payload);
+    return response.data; 
   } catch (error: any) {
     console.error('Error en login:', error.response?.data || error.message);
     throw error;

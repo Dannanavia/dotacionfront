@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/header';
 import SearchInput from '@/components/iconsearchinput';
 import CustomSelect from '@/components/customSelect';
 import InstitutionCard from '@/components/institutionCard';
-import { fetchInstituciones, Institucion } from '@/services/instituciones';
+import { fetchMunicipios, Municipio } from '@/services/municipios';
 import { useAuth } from '@/context/AuthContext';
 
 const tipos = [
@@ -14,41 +15,40 @@ const tipos = [
   { value: 'privado', label: 'Privado' },
 ];
 
-export default function InstitucionesPage() {
+export default function MunicipiosPage() {
   const [busqueda, setBusqueda] = useState('');
   const [tipoSeleccionado, setTipoSeleccionado] = useState('');
-  const [instituciones, setInstituciones] = useState<Institucion[]>([]);
+  const [municipios, setMunicipios] = useState<Municipio[]>([]);
   const { token } = useAuth();
 
   useEffect(() => {
-    const cargar = async () => {
-      if (!token) return;
+    if (!token) return;
+
+    const cargarMunicipios = async () => {
       try {
-        const data = await fetchInstituciones(token);
-        setInstituciones(data);
+        const data = await fetchMunicipios(token);
+        setMunicipios(data);
       } catch (err) {
-        console.error('Error al cargar instituciones:', err);
+        console.error('Error al cargar municipios:', err);
       }
     };
 
-    cargar();
+    cargarMunicipios();
   }, [token]);
 
-  const institucionesFiltradas = instituciones.filter((inst) =>
-    inst.nombreInstitucion.toLowerCase().includes(busqueda.toLowerCase())
+  const municipiosFiltrados = municipios.filter((m) =>
+    m.nombreMunicipio.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
     <main className="bg-white min-h-screen">
-      {/* Header */}
       <Header />
 
-      {/* Filtros centrados */}
       <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-8 mt-6 px-4 w-full">
         <SearchInput
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
-          placeholder="Buscar institución"
+          placeholder="Buscar municipio"
         />
         <CustomSelect
           options={tipos}
@@ -57,19 +57,16 @@ export default function InstitucionesPage() {
         />
       </div>
 
-      {/* Título */}
       <h2 className="text-center text-2xl font-semibold text-[#FFD700] mb-6 tracking-wide">
-        Lista de Instituciones
+        Lista de Municipios
       </h2>
 
-      {/* Cards */}
       <div className="flex flex-wrap gap-6 justify-center">
-        {institucionesFiltradas.length > 0 ? (
-          institucionesFiltradas.map((inst) => (
-            <InstitutionCard
-              key={inst.idInstitucion}
-              name={inst.nombreInstitucion}
-            />
+        {municipiosFiltrados.length > 0 ? (
+          municipiosFiltrados.map((m) => (
+            <Link key={m.idMunicipio} href={`/municipality/${m.idMunicipio}`}>
+              <InstitutionCard name={m.nombreMunicipio} />
+            </Link>
           ))
         ) : (
           <p className="text-black text-center w-full">
