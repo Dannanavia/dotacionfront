@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Header from '@/components/header';
 import SearchInput from '@/components/iconsearchinput';
 import CustomSelect from '@/components/customSelect';
@@ -16,7 +16,7 @@ const tipos = [
   { value: 'privado', label: 'Privado' },
 ];
 
-export default function InstitucionesPage() {
+function InstitucionesContent() {
   const [busqueda, setBusqueda] = useState('');
   const [tipoSeleccionado, setTipoSeleccionado] = useState('');
   const [instituciones, setInstituciones] = useState<Institucion[]>([]);
@@ -44,11 +44,8 @@ export default function InstitucionesPage() {
   );
 
   return (
-    <main className="bg-white min-h-screen">
-      {/* Header */}
-      <Header />
-
-      {/* Filtros centrados */}
+    <>
+      {/* Filtros */}
       <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-8 mt-6 px-4 w-full">
         <SearchInput
           value={busqueda}
@@ -72,12 +69,8 @@ export default function InstitucionesPage() {
         {institucionesFiltradas.length > 0 ? (
           institucionesFiltradas.map((inst) => (
             <Link key={inst.idInstitucion} href={`/sites?institucion=${inst.idInstitucion}`}>
-              <InstitutionCard
-                key={inst.idInstitucion}
-                name={inst.nombreInstitucion}
-              />
+              <InstitutionCard name={inst.nombreInstitucion} />
             </Link>
-
           ))
         ) : (
           <p className="text-black text-center w-full">
@@ -85,6 +78,17 @@ export default function InstitucionesPage() {
           </p>
         )}
       </div>
+    </>
+  );
+}
+
+export default function InstitucionesPage() {
+  return (
+    <main className="bg-white min-h-screen">
+      <Header />
+      <Suspense fallback={<div className="text-center py-10 text-gray-500">Cargando instituciones...</div>}>
+        <InstitucionesContent />
+      </Suspense>
     </main>
   );
 }
