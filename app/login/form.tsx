@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { login } from '@/services/authDotacion';
-import { useAuth } from '@/context/AuthContext'; 
+import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const Form = () => {
   const router = useRouter();
-  const { setToken } = useAuth(); 
+  const { setToken } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,15 +28,13 @@ const Form = () => {
       setToken(response.token);
 
       console.log('Login exitoso', response);
-      router.push('/municipality'); 
-    } catch (err: any) {
-      console.error('Error en login:', err);
-      setError(
-        err?.response?.status === 401
-          ? 'Usuario o contraseña incorrectos'
-          : 'Error de red o del servidor'
-      );
+      router.push('/municipality');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Error en login:', err.message);
+      }
     }
+
   };
 
   return (
@@ -55,7 +53,7 @@ const Form = () => {
               height={100}
               className="mx-auto mb-4"
             />
-            SUMSERVICIOS DNJ 
+            SUMSERVICIOS DNJ
           </h2>
 
           {error && (
