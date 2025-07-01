@@ -9,11 +9,18 @@ interface InstitutionCardProps {
 const InstitutionCard: React.FC<InstitutionCardProps> = ({ name }) => {
   return (
     <div
-      className="cursor-pointer bg-[#2C2C2C] hover:bg-[#3a3a3a] text-white rounded-xl shadow-md p-6 w-64 transition duration-200 ease-in-out border border-[#FFD700]"
+      className="relative w-64 h-36 rounded-xl overflow-hidden bg-gradient-to-br from-[#1f1f1f] to-[#2c2c2c] border border-[#FFD700]/50 
+                 shadow-md hover:shadow-yellow-400/30 transform hover:scale-[1.03] transition-all duration-300 ease-in-out group"
     >
-      <h3 className="text-lg font-semibold text-center text-[#FFD700]">
-        {name}
-      </h3>
+      {/* Borde animado */}
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-yellow-400 rounded-xl transition-all duration-300 pointer-events-none"></div>
+
+      {/* Contenido centrado */}
+      <div className="flex items-center justify-center h-full p-4">
+        <h3 className="text-center text-white text-lg font-semibold tracking-wide group-hover:text-yellow-400 transition-colors duration-300">
+          {name}
+        </h3>
+      </div>
     </div>
   );
 };
