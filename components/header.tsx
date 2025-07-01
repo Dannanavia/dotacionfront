@@ -10,32 +10,33 @@ const Header = () => {
   const { setToken } = useAuth();
 
   const handleLogout = () => {
-    setToken(''); 
-    router.push('/login'); 
+    setToken('');
+    router.push('/');
   };
 
   return (
-    <header className="bg-black text-[#FFD700] px-4 py-6 shadow-md w-full">
-      <div className="flex items-center justify-between w-full">
-     
-        <div className="flex-shrink-0">
+    <header className="bg-black text-[#FFD700] w-full shadow-md px-4 py-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
+        {/* Logo */}
+        <div className="flex justify-center sm:justify-start">
           <Image
             src="/images/logo.png"
             alt="Logo"
-            width={70}
-            height={70}
+            width={60}
+            height={60}
+            className="object-contain"
           />
         </div>
 
-        
-        <nav className="flex-1 flex justify-center gap-8 text-sm md:text-base">
+        {/* Navegación */}
+        <nav className="flex justify-center gap-6 text-sm md:text-base flex-wrap text-center">
           <a href="/home" className="hover:underline">Inicio</a>
           <a href="/municipality" className="hover:underline">Municipios</a>
           <a href="/inventory" className="hover:underline">Inventario</a>
         </nav>
 
-       
-        <div className="flex-shrink-0">
+        {/* Botón salir */}
+        <div className="flex justify-center sm:justify-end">
           <button
             onClick={handleLogout}
             className="bg-[#FFD700] text-black px-4 py-1 rounded hover:bg-yellow-400 transition text-sm"
