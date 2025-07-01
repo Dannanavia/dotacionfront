@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/header';
 import SearchInput from '@/components/iconsearchinput';
 import CustomSelect from '@/components/customSelect';
-import InstitutionCard from '@/components/institutionCard';
-import { fetchInstituciones, Institucion } from '@/services/instituciones';
+import InstitutionCard from '@/components/card';
+import { fetchInstitucionesPorMunicipio, Institucion } from '@/services/instituciones';
 import { useAuth } from '@/context/AuthContext';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const tipos = [
   { value: '', label: 'Todos los tipos' },
@@ -19,12 +21,15 @@ export default function InstitucionesPage() {
   const [tipoSeleccionado, setTipoSeleccionado] = useState('');
   const [instituciones, setInstituciones] = useState<Institucion[]>([]);
   const { token } = useAuth();
+  const searchParams = useSearchParams();
+  const municipioId = searchParams.get('municipio');
 
   useEffect(() => {
+    if (!token || !municipioId) return;
+
     const cargar = async () => {
-      if (!token) return;
       try {
-        const data = await fetchInstituciones(token);
+        const data = await fetchInstitucionesPorMunicipio(Number(municipioId), token);
         setInstituciones(data);
       } catch (err) {
         console.error('Error al cargar instituciones:', err);
@@ -32,7 +37,7 @@ export default function InstitucionesPage() {
     };
 
     cargar();
-  }, [token]);
+  }, [token, municipioId]);
 
   const institucionesFiltradas = instituciones.filter((inst) =>
     inst.nombreInstitucion.toLowerCase().includes(busqueda.toLowerCase())
@@ -66,10 +71,13 @@ export default function InstitucionesPage() {
       <div className="flex flex-wrap gap-6 justify-center">
         {institucionesFiltradas.length > 0 ? (
           institucionesFiltradas.map((inst) => (
-            <InstitutionCard
-              key={inst.idInstitucion}
-              name={inst.nombreInstitucion}
-            />
+            <Link key={inst.idInstitucion} href={`/sites?institucion=${inst.idInstitucion}`}>
+              <InstitutionCard
+                key={inst.idInstitucion}
+                name={inst.nombreInstitucion}
+              />
+            </Link>
+
           ))
         ) : (
           <p className="text-black text-center w-full">

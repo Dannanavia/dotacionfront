@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/header';
 import SearchInput from '@/components/iconsearchinput';
 import CustomSelect from '@/components/customSelect';
-import InstitutionCard from '@/components/institutionCard';
+import InstitutionCard from '@/components/card';
 import { fetchInstituciones } from '@/services/instituciones';
 import { useAuth } from '@/context/AuthContext'; // solo si usas contexto
+import Link from 'next/link';
 
 type Institucion = {
   idInstitucion: number;
@@ -77,10 +78,12 @@ export default function InstitucionesPage() {
       <div className="flex flex-wrap gap-6 justify-center">
         {institucionesFiltradas.length > 0 ? (
           institucionesFiltradas.map((inst) => (
-            <InstitutionCard
-              key={inst.idInstitucion}
-              name={inst.nombreInstitucion}
-            />
+            <Link key={inst.idInstitucion} href={`/sites?institucion=${inst.idInstitucion}`}>
+              <InstitutionCard
+                key={inst.idInstitucion}
+                name={inst.nombreInstitucion}
+              />
+            </Link>
           ))
         ) : (
           <p className="text-black text-center w-full">

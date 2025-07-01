@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/header';
 import SearchInput from '@/components/iconsearchinput';
 import CustomSelect from '@/components/customSelect';
-import InstitutionCard from '@/components/institutionCard';
+import InstitutionCard from '@/components/card';
 import { fetchMunicipios, Municipio } from '@/services/municipios';
 import { useAuth } from '@/context/AuthContext';
 
@@ -64,7 +64,7 @@ export default function MunicipiosPage() {
       <div className="flex flex-wrap gap-6 justify-center">
         {municipiosFiltrados.length > 0 ? (
           municipiosFiltrados.map((m) => (
-            <Link key={m.idMunicipio} href={`/municipality/${m.idMunicipio}`}>
+            <Link key={m.idMunicipio} href={`/institution?municipio=${m.idMunicipio}`}>
               <InstitutionCard name={m.nombreMunicipio} />
             </Link>
           ))
